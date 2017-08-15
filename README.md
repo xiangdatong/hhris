@@ -9,3 +9,5 @@
 文件说明：<br/>
 1. index.php--程序主文件;<br/>
 2. SimplifiedQuanPin.php--中文转拼音类，具有较好的兼容性及转换速度<br/>
+
+如有疑问可发邮件至：xzp44#163.com，请将#改为@<br/>
