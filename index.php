@@ -1,4 +1,6 @@
 <?php
+//ANSI编码
+//By xzp44@163.com 2016.1.8
 //需要把php_oracle.dll拷贝到system32下
 error_reporting(E_ERROR);
 date_default_timezone_set("Asia/chongqing");	//设置时区
@@ -51,7 +53,7 @@ if(isset($_POST['submit'])&&$_POST['submit']==='SAVE'&&$_SESSION['token']!=$toke
 			$seriesid = $seriesid[0]["NEXTVAL"];
 			
 			$sql1 = "INSERT INTO r_studies t (	STUDYID, 		PATIENTID, 		AGE,			LODGEHOSPITAL, 		LODGESECTION,	LODGEDOCTOR,	LODGEDATE, 							BEDNO, 			CLIISINPAT,	ENROLDOCTOR, 	ENROLTIME, 	EXIGENCE,	STATUS,		CLASSNAME,	PHOTONO,		PARTOFCHECK,	STUINSUID, 											INHOSPITALNO,	APPLYNUMBER, 			ACCESSIONNUMBER,	T_PRIORITY) 
-									VALUES (		'{$studyid}',	'{$patientid}',	'{$line[8]} 岁',	'汉中市中心医院', 	'{$line[5]}', 	'', 			to_date('{$date}','yyyy-mm-dd'), 	'{$line[6]}',	'住院',		'向治平', 	'{$time}',	'0',		'已登记',	'{$room}',	'{$photono}',	'{$part}',			'1.2.840.31314.14143234.{$date1}.{$studyid}',	'{$line[4]}',	'{$studyid}',			'{$studyid}',		'普通')";
+									VALUES (		'{$studyid}',	'{$patientid}',	'{$line[8]} 岁',	'汉****医院', 	'{$line[5]}', 	'', 			to_date('{$date}','yyyy-mm-dd'), 	'{$line[6]}',	'住院',		'**平', 	'{$time}',	'0',		'已登记',	'{$room}',	'{$photono}',	'{$part}',			'1.2.840.31314.14143234.{$date1}.{$studyid}',	'{$line[4]}',	'{$studyid}',			'{$studyid}',		'普通')";
 			$sql2 = "INSERT INTO r_patient t (	PATIENTID,	HISID, 		PHOTONO, 		NAME,			ENGNAME,		SEX,			BIRTHDATE,							TELEPHONE,	MODIFIED) 
 									VALUES ( 	'{$patientid}',	'0',	'{$photono}',	'{$line[3]}',	'{$enname}',	'{$line[7]}',	to_date('{$birth}','yyyy-mm-dd'), 	'0', 		'0')";
 			$sql3 = "INSERT INTO r_series t (SERIESID, 		STUDYID, 		DIRECTION ) 
@@ -83,7 +85,7 @@ function oracle($sql, $method='r'){
 	if(!$sql) return false;
 	
 	$db = "(DESCRIPTION=(ADDRESS_LIST = (ADDRESS = (PROTOCOL = TCP)(HOST = 192.168.2.80)(PORT = 1521)))(CONNECT_DATA=(SID=oracle)))"; 
-	$conn = oci_connect("hhris","hhris",$db,"US7ASCII");
+	$conn = oci_connect("user","pwd",$db,"US7ASCII");
 	
 	$stmt = oci_parse($conn, $sql);
 	$state = oci_execute($stmt);

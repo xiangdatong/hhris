@@ -1,6 +1,6 @@
 <?php
 //根据微软全拼字码表获取中文拼音，ANSI编码
-//By xiangfirst@163.com 2016.1.8
+//By xzp44@163.com 2016.1.8
 //2016.01.11使用正则匹配方式获取拼音，速度提高70倍
 class SimplifiedQuanPin {
 	function __construct(){
