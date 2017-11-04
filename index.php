@@ -1,9 +1,9 @@
 <?php
-//ANSI±àÂë
+//ANSIç¼–ç 
 //By xzp44@163.com 2016.1.8
-//ĞèÒª°Ñphp_oracle.dll¿½±´µ½system32ÏÂ
+//éœ€è¦æŠŠphp_oracle.dllæ‹·è´åˆ°system32ä¸‹
 error_reporting(E_ERROR);
-date_default_timezone_set("Asia/chongqing");	//ÉèÖÃÊ±Çø
+date_default_timezone_set("Asia/chongqing");	//è®¾ç½®æ—¶åŒº
 require_once('SimplifiedQuanPin.php');
 
 session_start();
@@ -11,7 +11,7 @@ session_start();
 $randstr = md5(time().mt_rand(10,1000));
 $token = isset($_GET['token']) ? $_GET['token'] : null;
 isset($_SESSION['token']) ? null : ($_SESSION['token']=1);
-$msg = '¸Ã²å¼ş¿ÉÅúÁ¿Ïò»ªº£PACSµ¼ÈëÊı¾İ£¬½÷É÷Ê¹ÓÃ£¡';
+$msg = 'è¯¥æ’ä»¶å¯æ‰¹é‡å‘åæµ·PACSå¯¼å…¥æ•°æ®ï¼Œè°¨æ…ä½¿ç”¨ï¼';
 
 if(isset($_POST['submit'])&&$_POST['submit']==='SAVE'&&$_SESSION['token']!=$token){
 	$data = explode("\n", $_POST['data']);
@@ -33,10 +33,10 @@ if(isset($_POST['submit'])&&$_POST['submit']==='SAVE'&&$_SESSION['token']!=$toke
 			$sqp = new SimplifiedQuanPin;
 			$enname = $sqp->getFullSpell($line[3]);
 			
-			preg_match('/ĞÄ|¹Ú|Éä|²«|·¿|ÊÒ|¶¯Âöµ¼¹Ü|Íß¶úÈøÍßÊÏñ¼/',$line[11],$matches);
-			$part = $matches?'ĞÄÑª¹Ü':'ÍâÖÜ';
+			preg_match('/å¿ƒ|å† |å°„|æ|æˆ¿|å®¤|åŠ¨è„‰å¯¼ç®¡|ç“¦è€³è¨ç“¦æ°çª¦/',$line[11],$matches);
+			$part = $matches?'å¿ƒè¡€ç®¡':'å¤–å‘¨';
 			
-			$operation = trim(substr($line[11],0,50));//ÊÖÊõÃû³ÆÏŞÖÆ×Ö·û50
+			$operation = trim(substr($line[11],0,50));//æ‰‹æœ¯åç§°é™åˆ¶å­—ç¬¦50
 			
 			$sql4 = "SELECT MAXPATIENTID.nextval from dual";
 			$sql5 = "SELECT MAXSTUDYID.nextval from dual";
@@ -53,23 +53,23 @@ if(isset($_POST['submit'])&&$_POST['submit']==='SAVE'&&$_SESSION['token']!=$toke
 			$seriesid = $seriesid[0]["NEXTVAL"];
 			
 			$sql1 = "INSERT INTO r_studies t (	STUDYID, 		PATIENTID, 		AGE,			LODGEHOSPITAL, 		LODGESECTION,	LODGEDOCTOR,	LODGEDATE, 							BEDNO, 			CLIISINPAT,	ENROLDOCTOR, 	ENROLTIME, 	EXIGENCE,	STATUS,		CLASSNAME,	PHOTONO,		PARTOFCHECK,	STUINSUID, 											INHOSPITALNO,	APPLYNUMBER, 			ACCESSIONNUMBER,	T_PRIORITY) 
-									VALUES (		'{$studyid}',	'{$patientid}',	'{$line[8]} Ëê',	'ºº****Ò½Ôº', 	'{$line[5]}', 	'', 			to_date('{$date}','yyyy-mm-dd'), 	'{$line[6]}',	'×¡Ôº',		'**Æ½', 	'{$time}',	'0',		'ÒÑµÇ¼Ç',	'{$room}',	'{$photono}',	'{$part}',			'1.2.840.31314.14143234.{$date1}.{$studyid}',	'{$line[4]}',	'{$studyid}',			'{$studyid}',		'ÆÕÍ¨')";
+									VALUES (		'{$studyid}',	'{$patientid}',	'{$line[8]} å²',	'æ±‰****åŒ»é™¢', 	'{$line[5]}', 	'', 			to_date('{$date}','yyyy-mm-dd'), 	'{$line[6]}',	'ä½é™¢',		'**å¹³', 	'{$time}',	'0',		'å·²ç™»è®°',	'{$room}',	'{$photono}',	'{$part}',			'1.2.840.31314.14143234.{$date1}.{$studyid}',	'{$line[4]}',	'{$studyid}',			'{$studyid}',		'æ™®é€š')";
 			$sql2 = "INSERT INTO r_patient t (	PATIENTID,	HISID, 		PHOTONO, 		NAME,			ENGNAME,		SEX,			BIRTHDATE,							TELEPHONE,	MODIFIED) 
 									VALUES ( 	'{$patientid}',	'0',	'{$photono}',	'{$line[3]}',	'{$enname}',	'{$line[7]}',	to_date('{$birth}','yyyy-mm-dd'), 	'0', 		'0')";
 			$sql3 = "INSERT INTO r_series t (SERIESID, 		STUDYID, 		DIRECTION ) 
 									VALUES ( '{$seriesid}', 	'{$studyid}', 	'{$operation}')";
 			
 			if(false===oracle($sql1,'w')){
-				$msg = '[1/3][STUDIES]Ğ´ÈëÊ§°Ü£¡';
+				$msg = '[1/3][STUDIES]å†™å…¥å¤±è´¥ï¼';
 			}else{
 				if(false===oracle($sql2, 'w')){
-					$msg = '[2/3][PATIENT]Ğ´ÈëÊ§°Ü£¡';
+					$msg = '[2/3][PATIENT]å†™å…¥å¤±è´¥ï¼';
 				}else{
 					if(false===oracle($sql3, 'w')){
-						$msg = '[3/3][SERIES]Ğ´ÈëÊ§°Ü£¡';
+						$msg = '[3/3][SERIES]å†™å…¥å¤±è´¥ï¼';
 					}else{
 						$_SESSION['token'] = $token;
-						$msg = 'µ¼Èë³É¹¦£¡';
+						$msg = 'å¯¼å…¥æˆåŠŸï¼';
 					}
 				}
 			}
@@ -77,7 +77,7 @@ if(isset($_POST['submit'])&&$_POST['submit']==='SAVE'&&$_SESSION['token']!=$toke
 	
 	}
 }elseif($_SESSION['token']== $token){
-	$msg = 'ÇëÎğÖØ¸´Ìá½»±íµ¥£¡';
+	$msg = 'è¯·å‹¿é‡å¤æäº¤è¡¨å•ï¼';
 }
 
 
@@ -93,7 +93,7 @@ function oracle($sql, $method='r'){
 	$data = null;
 	if($method=='r'){
 		while($result = oci_fetch_array($stmt, OCI_ASSOC)){
-			$data[] = $result; //ÎŞ½á¹û·µ»Ønull
+			$data[] = $result; //æ— ç»“æœè¿”å›null
 		}
 	}elseif($method=='w'){
 		$data = $state;
@@ -122,12 +122,12 @@ textarea {width:100%;border:1px solid green;background-color:black;color:green;o
 </head>
 <body>
 	<div style="margin:15px 0;">
-		<h1>Hack for HHIRS</h1>
+		<h1>æ•°æ®æ‰¹é‡å½•å…¥æ’ä»¶ for HHRIS</h1>
 	</div>
 	
 	<div class="" style="margin:15px 0;">
 		<div style="padding:0 12px 10px;">
-			<p>INPUT DATA£º <span style="color:red;"><?php echo $msg ?></span></p>
+			<p>INPUT DATAï¼š <span style="color:red;"><?php echo $msg ?></span></p>
 			<form action="?token=<?php echo $randstr ?>" method="post">
 			<textarea name="data" cols="" rows="25" wrap="off"></textarea>
 			<p style="padding:20px 0;"><input id="SAVE" name="submit" type="submit" value="SAVE" /></p>
@@ -142,18 +142,18 @@ $(function () {
 		var text = $("textarea").val();
 		text = text.replace(/( )*\t/g, "\t");
 		if(text.length<32){
-			$("span").text("·Ç·¨Êı¾İ£¡"); 
+			$("span").text("éæ³•æ•°æ®ï¼"); 
 			return false;
 		}
 		
-		var res = text.match(/\d{2}[\t \d:\w]{10,}[\u2E80-\u9FFF]{2,5}\t\d{7,}\t[\s\S].+[ÄĞÅ®]\t\d{1,3}[\s\S].+[\d-: ]{19}\t.*/g);
+		var res = text.match(/\d{2}[\t \d:\w]{10,}[\u2E80-\u9FFF]{2,5}\t\d{7,}\t[\s\S].+[ç”·å¥³]\t\d{1,3}[\s\S].+[\d-: ]{19}\t.*/g);
 		if(!res){
-			$("span").text("·Ç·¨Êı¾İ£¡"); 
+			$("span").text("éæ³•æ•°æ®ï¼"); 
 			return false;
 		}
-		$("span").text("½âÎö³É¹¦£¡");
+		$("span").text("è§£ææˆåŠŸï¼");
 		$("textarea").val(text);
-		var r=confirm("³É¹¦½âÎö³ö "+res.length+" ÌõÊı¾İ£¬È·¶¨Òªµ¼ÈëÕâĞ©Êı¾İÂğ£¿");
+		var r=confirm("æˆåŠŸè§£æå‡º "+res.length+" æ¡æ•°æ®ï¼Œç¡®å®šè¦å¯¼å…¥è¿™äº›æ•°æ®å—ï¼Ÿ");
 		if (r==true){
 			return true;
 		}else{
